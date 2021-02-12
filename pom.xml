@@ -62,11 +62,6 @@
       <artifactId>vertx-web</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.folio</groupId>
-      <artifactId>mod-configuration-client</artifactId>
-      <version>${mod-configuration-client.version}</version>
-    </dependency>
-    <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-service-proxy</artifactId>
     </dependency>
