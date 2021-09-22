@@ -30,6 +30,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static io.vertx.core.Future.succeededFuture;
 import static org.folio.rest.jaxrs.model.DataImportEventTypes.DI_RAW_RECORDS_CHUNK_READ;
@@ -159,8 +160,13 @@ public class ParallelFileChunkingProcessor implements FileProcessor {
     readStreamWrapper.pause();
 
     LOGGER.debug("Starting to send event to Kafka... jobProfile: {}, eventType: {}", jobProfile, eventType);
+
+    Map<String, String> producerProps = kafkaConfig.getProducerProps();
+//    producerProps.put("compression.type", "zstd");
+    producerProps.put("compression.type", "lz4");
+
     KafkaProducer<String, String> producer = KafkaProducer.createShared(vertx,
-      eventType + "_Producer", kafkaConfig.getProducerProps());
+      eventType + "_Producer", producerProps);
     readStreamWrapper.pipeTo(new WriteStreamWrapper(producer), ar -> {
       boolean succeeded = ar.succeeded();
       LOGGER.info("Sending event to Kafka finished. ar.succeeded(): {} jobProfile: {}, eventType: {}",
