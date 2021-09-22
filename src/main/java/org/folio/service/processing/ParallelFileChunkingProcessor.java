@@ -163,7 +163,8 @@ public class ParallelFileChunkingProcessor implements FileProcessor {
 
     Map<String, String> producerProps = kafkaConfig.getProducerProps();
 //    producerProps.put("compression.type", "zstd");
-    producerProps.put("compression.type", "lz4");
+//    producerProps.put("compression.type", "lz4");
+    producerProps.put("compression.type", "gzip");
 
     KafkaProducer<String, String> producer = KafkaProducer.createShared(vertx,
       eventType + "_Producer", producerProps);
